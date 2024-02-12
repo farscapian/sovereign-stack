@@ -451,17 +451,19 @@ EOL
 
         fi
 
-        INCUS_VM_NAME="${LNPLAY_SERVER_FQDN//./-}"
-        if ! incus image list -q --format csv | grep -q "$INCUS_VM_NAME"; then
+        INCUS_LNPLAYSERVER_IMAGE_NAME="lnplayserver-$DOMAIN_NAME"
+        if ! incus image list -q --format csv | grep -q "$INCUS_LNPLAYSERVER_IMAGE_NAME"; then
 
             # do all the docker image creation steps, but don't run services.
             bash -c "./project/lnplay/up.sh -y --no-services  --lnplay-conf-path=$LNPLAY_ENV_FILE"
 
             # stop the instance so we can get an image yo
+            INCUS_VM_NAME="${LNPLAY_SERVER_FQDN//./-}"
+
             incus stop "$INCUS_VM_NAME"
 
             # create the incus image.
-            incus publish -q --public "$INCUS_VM_NAME" --alias="$INCUS_VM_NAME" --compression none
+            incus publish -q --public "$INCUS_VM_NAME" --alias="$INCUS_LNPLAYSERVER_IMAGE_NAME" --compression none
 
             incus start "$INCUS_VM_NAME"
             sleep 10
@@ -469,8 +471,6 @@ EOL
             bash -c "./wait_for_ip.sh --incus-name=$INCUS_VM_NAME"
             sleep 3
         fi
-
-
 
         # bring up lnplay services.
         bash -c "./project/lnplay/up.sh -y --lnplay-conf-path=$LNPLAY_ENV_FILE"

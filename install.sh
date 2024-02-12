@@ -11,36 +11,11 @@ if [ "$(hostname)" = ss-mgmt ]; then
     exit 1
 fi
 
-DISK_OR_PARTITION=
-
-# grab any modifications from the command line.
-for i in "$@"; do
-    case $i in
-        --disk=*)
-            DISK_OR_PARTITION="${i#*=}"
-            shift
-        ;;
-        *)
-        echo "Unexpected option: $1"
-        exit 1
-        ;;
-    esac
-done
-
-
 # ensure the iptables forward policy is set to ACCEPT so your host can act as a router
 # Note this is necessary if docker is running (or has been previuosly installed) on the
 # same host running incus.
 sudo iptables -F FORWARD
 sudo iptables -P FORWARD ACCEPT
-
-# if the user didn't specify the disk or partition, we create a loop device under
-# the user's home directory. If the user does specify a disk or partition, we will
-# create the ZFS pool there.
-if [ -z "$DISK_OR_PARTITION" ]; then
-    echo "ERROR: You MUST set DISK_OR_PARTITION"
-    exit 1
-fi
 
 # run the incus install script.
 sudo bash -c ./install_incus.sh
@@ -59,7 +34,7 @@ networks:
   project: default
 storage_pools:
 - config:
-    source: ${DISK_OR_PARTITION}
+    size: 30GiB
   description: ""
   name: sovereign-stack
   driver: zfs

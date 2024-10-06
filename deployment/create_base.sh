@@ -35,7 +35,7 @@ else
         # TODO move this sovereign-stack-base construction VM to separate dedicated IP
         incus config set "$BASE_IMAGE_VM_NAME" --project default
         incus start "$BASE_IMAGE_VM_NAME" --project default
-        sleep 15
+        sleep 30
     fi
 
     # for CHAIN in mainnet testnet; do

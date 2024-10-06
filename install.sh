@@ -14,8 +14,8 @@ fi
 # ensure the iptables forward policy is set to ACCEPT so your host can act as a router
 # Note this is necessary if docker is running (or has been previuosly installed) on the
 # same host running incus.
-sudo iptables -F FORWARD
-sudo iptables -P FORWARD ACCEPT
+#sudo iptables -F FORWARD
+#sudo iptables -P FORWARD ACCEPT
 
 # run the incus install script.
 sudo bash -c ./install_incus.sh

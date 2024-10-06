@@ -198,6 +198,7 @@ SITE_LANGUAGE_CODES="en"
 DUPLICITY_BACKUP_PASSPHRASE="$(new_pass)"
 DEPLOY_GHOST=true
 
+DEPLOY_CLBOSS_PLUGIN=true
 DEPLOY_NEXTCLOUD=false
 DEPLOY_NOSTR=false
 NOSTR_ACCOUNT_PUBKEY=
@@ -411,6 +412,9 @@ done
 if [ "$SKIP_BTCPAY_SERVER" = false ]; then
     if [ -n "$BTCPAY_SERVER_MAC_ADDRESS" ]; then
         export DOCKER_HOST="ssh://ubuntu@$BTCPAY_SERVER_FQDN"
+        export DOMAIN_NAME="$DOMAIN_NAME"
+        export SITE_PATH="$SITES_PATH/$PRIMARY_DOMAIN"
+        export DEPLOY_CLBOSS_PLUGIN="$DEPLOY_CLBOSS_PLUGIN"
         ./project/btcpayserver/go.sh
     fi
 fi

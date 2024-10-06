@@ -120,14 +120,14 @@ echo "SERVERS: $SERVERS"
 echo "BACKUP_WWW_APPS: $BACKUP_WWW_APPS"
 
 
-# let's grab a snapshot of the 
+# let's grab a backup of the www
 if [ "$BACKUP_WWW_APPS" = true ]; then
     SNAPSHOT_ID=$(cat /dev/urandom | tr -dc 'a-aA-Z' | fold -w 6 | head -n 1)
     incus storage volume snapshot create ss-base www-ss-data "$SNAPSHOT_ID"
     BACKUP_LOCATION="$HOME/ss/backups"
     mkdir -p "$BACKUP_LOCATION"
-    #incus storage volume export ss-base "www-ss-data" "$BACKUP_LOCATION/project-$(incus project list --format csv | grep "(current)" | awk '{print $1}')_www-ss-data_""$(date +%s)"".tar.gz"
-    #incus storage volume snapshot delete ss-base "www-ss-data" "$SNAPSHOT_ID"
+    incus storage volume export ss-base "www-ss-data" "$BACKUP_LOCATION/project-$(incus project list --format csv | grep "(current)" | awk '{print $1}')_www-ss-data_""$(date +%s)"".tar.gz"
+    incus storage volume snapshot delete ss-base "www-ss-data" "$SNAPSHOT_ID"
 fi
 
 if [[ "$SERVERS" == *"www"* && "$SERVERS" == *"btcpay"* ]]; then

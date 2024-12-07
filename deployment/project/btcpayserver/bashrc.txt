@@ -1,0 +1,3 @@
+# these aliases are simply calling the btcpay server scripts.
+alias bitcoin-cli="/home/ubuntu/ss-data/btcpayserver-docker/bitcoin-cli.sh $@"
+alias lightning-cli="/home/ubuntu/ss-data/btcpayserver-docker/bitcoin-lightning-cli.sh $@"

@@ -40,6 +40,10 @@ for i in "$@"; do
             SKIP_LNPLAY_SERVER=true
             shift
         ;;
+        --skip-wwwbackup)
+            BACKUP_WWW_APPS=false
+            shift
+        ;;
         *)
         echo "Unexpected option: $1"
         exit 1
@@ -110,15 +114,6 @@ for VIRTUAL_MACHINE in $SERVERS; do
         done
     fi
 done
-
-
-BACKUP_WWW_APPS=true
-echo "BACKUP_WWW_APPS: $BACKUP_WWW_APPS"
-
-
-echo "SERVERS: $SERVERS"
-echo "BACKUP_WWW_APPS: $BACKUP_WWW_APPS"
-
 
 # let's grab a backup of the www
 if [ "$BACKUP_WWW_APPS" = true ]; then
